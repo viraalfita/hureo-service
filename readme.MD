@@ -1,57 +1,63 @@
 # Attendance Service (Express + MongoDB)
 
-RESTful API backend untuk sistem absensi karyawan.  
-Dibangun menggunakan **Express.js**, **MongoDB (Mongoose)**, dan **Day.js** untuk mendukung aplikasi **Attendance Web** dan **Attendance Mobile**.
+RESTful API backend untuk sistem **manajemen absensi dan karier karyawan**.
+Dibangun menggunakan **Express.js**, **MongoDB (Mongoose)**, dan **Day.js** untuk mendukung integrasi dengan **Attendance Web Dashboard** dan **Attendance Mobile App**.
+
+---
 
 ## 🚀 Features
 
-- **Autentikasi & Manajemen Pengguna**
-  - Registrasi admin dan karyawan.
-  - Login pengguna.
-  - Ambil data semua user atau berdasarkan perusahaan.
-  - Hapus pengguna.
+### 🔐 Autentikasi & Manajemen Pengguna
 
-- **Manajemen Perusahaan**
-  - Registrasi perusahaan baru dengan **Google Maps API (RapidAPI)** untuk validasi alamat.
-  - Update informasi perusahaan (nama, alamat, jam kerja, radius lokasi).
-  - Ambil informasi jam kerja perusahaan.
-  - Ambil data semua perusahaan atau berdasarkan `companyCode`.
+* Registrasi dan login untuk **admin** & **karyawan**.
+* Pengelolaan akun berdasarkan perusahaan (multi-tenant).
+* Token-based authentication menggunakan **JWT**.
 
-- **Absensi (Check-in & Check-out)**
-  - Validasi lokasi dengan **geofencing** (Haversine formula).
-  - Validasi jam masuk (timeStart + graceMinutes).
-  - Menyimpan status keterlambatan (`late`).
-  - Endpoint untuk semua absensi, per user, per perusahaan, atau khusus hari ini.
+### 🏢 Manajemen Perusahaan
 
-- **Cuti**
-  - Ajukan cuti (dengan validasi overlap).
-  - Approve / decline cuti.
-  - Batalkan cuti (jika status masih *waiting*).
-  - Ambil semua cuti, per user, atau per perusahaan.
+* Registrasi perusahaan baru dengan validasi alamat via **Google Maps API (RapidAPI)**.
+* Pengaturan profil perusahaan: nama, alamat, jam kerja, dan radius lokasi.
+* Mendukung **jam kerja dinamis** per cabang.
 
-## 📦 Tech Stack
+### 🕓 Absensi (Check-in / Check-out)
 
-- **Runtime**: [Node.js](https://nodejs.org/)
-- **Framework**: [Express.js](https://expressjs.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/) + [Mongoose](https://mongoosejs.com/)
-- **Time Handling**: [Day.js](https://day.js.org/)
-- **Maps API**: [Google Map Places API (via RapidAPI)](https://rapidapi.com/)
+* Validasi lokasi menggunakan **geofencing (Haversine formula)**.
+* Validasi jam masuk.
+* Deteksi otomatis status “late” dan penyimpanan riwayat absensi.
+* Sinkronisasi penuh dengan **mobile app (Flutter)** dan **web dashboard (Vue)**.
+
+### 🗓️ Cuti & Izin
+
+* Pengajuan, persetujuan, dan pembatalan cuti.
+* Validasi tumpang tindih (*overlap validation*).
+* Sinkronisasi status cuti antar platform (mobile & web).
+
+### 💼 Karir & Rekrutmen
+
+* Manajemen **posisi/jabatan** dalam perusahaan.
+* Modul **rekrutmen digital**: lowongan, pelamar, dan tahapan seleksi.
+* Integrasi langsung dengan frontend untuk **KPI dan performa karyawan**.
+
+---
 
 ## 🔗 Related Repositories
 
-- **Frontend Web Dashboard (Vue 3)**  
-  👉 [my-attendance-app](https://github.com/viraalfita/my-attendance-app)
+* **Frontend Web Dashboard (Vue 3)**
+  👉 [Hureo Web](https://github.com/viraalfita/hureo-web)
 
-- **Mobile App (Flutter)**  
-  👉 [attendance (Mobile)](https://github.com/viraalfita/attendance)
+* **Mobile App (Flutter)**
+  👉 [Hureo App (Only for Employee Attendance)](https://github.com/viraalfita/hureo-app)
+
+---
 
 ## ⚙️ Installation & Setup
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/viraalfita/attendance-service.git
 cd attendance-service
-````
+```
 
 ### 2. Install Dependencies
 
@@ -76,57 +82,18 @@ RAPIDAPI_KEY=your-rapidapi-key
 npm run dev
 ```
 
-API tersedia di:
+API berjalan di:
 
 ```
 http://localhost:5001/api
 ```
 
-## 📚 API Endpoints (Ringkasan)
+---
 
-### Auth
-
-* `POST /api/auth/register/employee`
-* `POST /api/auth/register/admin`
-* `POST /api/auth/login`
-* `GET /api/auth/` → semua user
-* `GET /api/auth/company/:companyId` → user per perusahaan
-* `DELETE /api/auth/:id` → hapus user
-
-### Company
-
-* `POST /api/companies/register`
-* `PATCH /api/companies/:id`
-* `GET /api/companies/` → semua perusahaan
-* `GET /api/companies/:companyCode`
-* `GET /api/companies/hours/:companyCode`
-
-### Attendance
-
-* `POST /api/attendance/checkin`
-* `POST /api/attendance/checkout`
-* `GET /api/attendance/` → semua absensi
-* `GET /api/attendance/:userId` → absensi per user
-* `GET /api/attendance/company/:companyId`
-* `GET /api/attendance/today/:userId`
-* `GET /api/attendance/company/:companyId/today`
-
-### Leaves
-
-* `POST /api/leaves/`
-* `GET /api/leaves/`
-* `GET /api/leaves/:userId`
-* `PATCH /api/leaves/:id/status`
-* `DELETE /api/leaves/:id`
-
-## 📸 Architecture
+## 🧩 Architecture Overview
 
 ```
 Frontend (Vue) <-> Express API <-> MongoDB
-Mobile (Flutter)
+            ↕
+        Mobile (Flutter)
 ```
-
-## 👤 Author
-
-Developed by **Vira Alfita (TI 3C, Politeknik Negeri Malang)**
-Part of integrated system: **Web Dashboard + Express Backend + Mobile Flutter Attendance**
