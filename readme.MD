@@ -1,4 +1,4 @@
-# Attendance Service (Express + MongoDB)
+# HUREO HRIS Service (Express + MongoDB)
 
 RESTful API backend untuk sistem **manajemen absensi dan karier karyawan**.
 Dibangun menggunakan **Express.js**, **MongoDB (Mongoose)**, dan **Day.js** untuk mendukung integrasi dengan **Attendance Web Dashboard** dan **Attendance Mobile App**.
