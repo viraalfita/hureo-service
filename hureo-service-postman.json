@@ -1,0 +1,649 @@
+{
+  "info": {
+    "name": "Hureo Service API",
+    "description": "Collection untuk menguji semua endpoint hureo-service. Gunakan variabel base_url supaya mudah ganti host.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5001" },
+    { "key": "companyId", "value": "64b0f1a0aa0aa00000000001" },
+    { "key": "companyCode", "value": "HUR123" },
+    { "key": "userId", "value": "64b0f1a0aa0aa00000000002" },
+    { "key": "employeeId", "value": "64b0f1a0aa0aa00000000003" },
+    { "key": "jobId", "value": "64b0f1a0aa0aa00000000004" },
+    { "key": "candidateId", "value": "64b0f1a0aa0aa00000000005" },
+    { "key": "leaveId", "value": "64b0f1a0aa0aa00000000006" }
+  ],
+  "item": [
+    {
+      "name": "General",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Root",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Companies",
+      "item": [
+        {
+          "name": "Register Company",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hureo Labs\",\n  \"address\": \"Jl. Jendral Sudirman, Jakarta\",\n  \"radius\": 200,\n  \"timeStart\": \"09:00\",\n  \"timeEnd\": \"18:00\",\n  \"recruiterEmail\": \"recruiter@hureo.test\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/companies/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "companies", "register"]
+            }
+          }
+        },
+        {
+          "name": "Update Company",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Hureo Labs Updated\",\n  \"address\": \"BSD City, Tangerang\",\n  \"radius\": 250,\n  \"time_start\": \"09:30\",\n  \"time_end\": \"18:30\",\n  \"recruiterEmail\": \"talent@hureo.test\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/companies/{{companyId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "companies", "{{companyId}}"]
+            }
+          }
+        },
+        {
+          "name": "Company Hours by Code",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/companies/hours/{{companyCode}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "companies", "hours", "{{companyCode}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Company by Code",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/companies/{{companyCode}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "companies", "{{companyCode}}"]
+            }
+          }
+        },
+        {
+          "name": "List Companies",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/companies",
+              "host": ["{{base_url}}"],
+              "path": ["api", "companies"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth / Users",
+      "item": [
+        {
+          "name": "Register Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin.hureo\",\n  \"password\": \"Admin123!\",\n  \"companyCode\": \"{{companyCode}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/register/admin",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "register", "admin"]
+            }
+          }
+        },
+        {
+          "name": "Register Employee",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"employee.one\",\n  \"password\": \"Employee123!\",\n  \"companyCode\": \"{{companyCode}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/register/employee",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "register", "employee"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin.hureo\",\n  \"password\": \"Admin123!\",\n  \"companyCode\": \"{{companyCode}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "login"]
+            }
+          }
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            }
+          }
+        },
+        {
+          "name": "Users by Company",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/users/company/{{companyId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "company", "{{companyId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/users/{{userId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attendance",
+      "item": [
+        {
+          "name": "Check In",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"latitude\": -6.200000,\n  \"longitude\": 106.816666,\n  \"clientTimezone\": \"Asia/Jakarta\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/attendance/checkin",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance", "checkin"]
+            }
+          }
+        },
+        {
+          "name": "Check Out",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"latitude\": -6.200000,\n  \"longitude\": 106.816666,\n  \"clientTimezone\": \"Asia/Jakarta\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/attendance/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance", "checkout"]
+            }
+          }
+        },
+        {
+          "name": "All Attendance",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/attendance",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance"]
+            }
+          }
+        },
+        {
+          "name": "Attendance by Company",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/attendance/company/{{companyId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance", "company", "{{companyId}}"]
+            }
+          }
+        },
+        {
+          "name": "Attendance by User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/attendance/{{userId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Today Attendance (User)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/attendance/today/{{userId}}?tz=Asia/Jakarta",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance", "today", "{{userId}}"],
+              "query": [{ "key": "tz", "value": "Asia/Jakarta" }]
+            }
+          }
+        },
+        {
+          "name": "Today Attendance (Company)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/attendance/company/{{companyId}}/today?tz=Asia/Jakarta",
+              "host": ["{{base_url}}"],
+              "path": ["api", "attendance", "company", "{{companyId}}", "today"],
+              "query": [{ "key": "tz", "value": "Asia/Jakarta" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Leaves",
+      "item": [
+        {
+          "name": "Request Leave",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"reason\": \"Medical leave\",\n  \"startDate\": \"2024-11-01\",\n  \"endDate\": \"2024-11-03\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/leaves",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leaves"]
+            }
+          }
+        },
+        {
+          "name": "All Leaves",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/leaves",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leaves"]
+            }
+          }
+        },
+        {
+          "name": "Leaves by User",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/leaves/{{userId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leaves", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Leave Status",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/leaves/{{leaveId}}/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leaves", "{{leaveId}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Leave",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/leaves/{{leaveId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leaves", "{{leaveId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Jobs",
+      "item": [
+        {
+          "name": "Create Job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": \"{{companyId}}\",\n  \"title\": \"Backend Engineer\",\n  \"slug\": \"backend-engineer\",\n  \"department\": \"Engineering\",\n  \"employmentType\": \"Full-time\",\n  \"location\": \"Jakarta\",\n  \"description\": \"Build and maintain APIs\",\n  \"requirements\": \"Node.js, MongoDB\",\n  \"status\": \"open\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "jobs"]
+            }
+          }
+        },
+        {
+          "name": "List Jobs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/jobs?companyId={{companyId}}&status=open",
+              "host": ["{{base_url}}"],
+              "path": ["api", "jobs"],
+              "query": [
+                { "key": "companyId", "value": "{{companyId}}" },
+                { "key": "status", "value": "open" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Job",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/jobs/{{jobId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Job",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Senior Backend Engineer\",\n  \"slug\": \"senior-backend-engineer\",\n  \"department\": \"Engineering\",\n  \"employmentType\": \"Full-time\",\n  \"location\": \"Jakarta / Hybrid\",\n  \"description\": \"Lead backend projects\",\n  \"requirements\": \"Node.js, MongoDB, Architecture\",\n  \"status\": \"open\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/jobs/{{jobId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "jobs", "{{jobId}}"]
+            }
+          }
+        },
+        {
+          "name": "Close Job",
+          "request": {
+            "method": "PATCH",
+            "url": {
+              "raw": "{{base_url}}/api/jobs/{{jobId}}/close",
+              "host": ["{{base_url}}"],
+              "path": ["api", "jobs", "{{jobId}}", "close"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Candidates",
+      "item": [
+        {
+          "name": "List Candidates",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/candidates?companyId={{companyId}}&jobId={{jobId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidates"],
+              "query": [
+                { "key": "companyId", "value": "{{companyId}}" },
+                { "key": "jobId", "value": "{{jobId}}" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Candidate Stage",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stage\": \"interview\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/candidates/{{candidateId}}/stage",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidates", "{{candidateId}}", "stage"]
+            }
+          }
+        },
+        {
+          "name": "Delete Candidate",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/candidates/{{candidateId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "candidates", "{{candidateId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Employees",
+      "item": [
+        {
+          "name": "Create Employee",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": \"{{companyId}}\",\n  \"fullName\": \"Jane Doe\",\n  \"email\": \"jane.doe@hureo.test\",\n  \"phone\": \"+62-81200000000\",\n  \"address\": \"Jakarta Selatan\",\n  \"gender\": \"female\",\n  \"dateOfBirth\": \"1996-05-10\",\n  \"position\": \"Product Manager\",\n  \"department\": \"Product\",\n  \"employmentType\": \"fulltime\",\n  \"hireDate\": \"2024-10-01\",\n  \"status\": \"active\",\n  \"resumeUrl\": \"/uploads/resumes/jane.pdf\",\n  \"source\": \"recruitment\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/employees",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees"]
+            }
+          }
+        },
+        {
+          "name": "List Employees",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/employees?companyId={{companyId}}&department=Product",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees"],
+              "query": [
+                { "key": "companyId", "value": "{{companyId}}" },
+                { "key": "department", "value": "Product" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Employee",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/employees/{{employeeId}}?companyId={{companyId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees", "{{employeeId}}"],
+              "query": [{ "key": "companyId", "value": "{{companyId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Update Employee",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+62-81300000000\",\n  \"position\": \"Lead PM\",\n  \"status\": \"active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/employees/{{employeeId}}?companyId={{companyId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees", "{{employeeId}}"],
+              "query": [{ "key": "companyId", "value": "{{companyId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Delete Employee",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/employees/{{employeeId}}?companyId={{companyId}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "employees", "{{employeeId}}"],
+              "query": [{ "key": "companyId", "value": "{{companyId}}" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "KPI",
+      "item": [
+        {
+          "name": "KPI by Company",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/kpi/company/{{companyId}}?month=2024-11",
+              "host": ["{{base_url}}"],
+              "path": ["api", "kpi", "company", "{{companyId}}"],
+              "query": [{ "key": "month", "value": "2024-11" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public Recruitment",
+      "item": [
+        {
+          "name": "Public List Jobs",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/public/{{companyCode}}/jobs",
+              "host": ["{{base_url}}"],
+              "path": ["api", "public", "{{companyCode}}", "jobs"]
+            }
+          }
+        },
+        {
+          "name": "Public Job Detail",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/public/{{companyCode}}/jobs/backend-engineer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "public", "{{companyCode}}", "jobs", "backend-engineer"]
+            }
+          }
+        },
+        {
+          "name": "Public Apply to Job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "multipart/form-data" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "fullName", "value": "John Candidate", "type": "text" },
+                { "key": "email", "value": "john.candidate@example.com", "type": "text" },
+                { "key": "phone", "value": "+62-81111111111", "type": "text" },
+                { "key": "coverLetter", "value": "Saya tertarik dengan posisi ini karena...", "type": "text" },
+                { "key": "address", "value": "Jl. Mawar No.1", "type": "text" },
+                { "key": "gender", "value": "male", "type": "text" },
+                { "key": "dateOfBirth", "value": "1995-02-15", "type": "text" },
+                { "key": "resume", "src": "./sample-resume.pdf", "type": "file" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/public/{{companyCode}}/jobs/backend-engineer/apply",
+              "host": ["{{base_url}}"],
+              "path": ["api", "public", "{{companyCode}}", "jobs", "backend-engineer", "apply"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dev / Tools",
+      "item": [
+        {
+          "name": "Send Test Mail",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{base_url}}/_mail/test",
+              "host": ["{{base_url}}"],
+              "path": ["_mail", "test"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
