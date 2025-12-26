@@ -1,4 +1,5 @@
 import Employee from "../models/Employee.js";
+import User from "../models/User.js";
 
 function resolveCompanyId(req) {
   return (
@@ -31,16 +32,28 @@ export const createEmployee = async (req, res) => {
       source = "recruitment",
       candidateId = null,
       jobId = null,
+      userId = null,
     } = req.body;
 
     if (!fullName || !email) {
       return res.status(400).json({ error: "fullName & email are required" });
     }
 
+    // Pastikan user ada dan masih dalam company yang sama jika userId diisi
+    if (userId) {
+      const user = await User.findOne({ _id: userId, companyId });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ error: "User not found in this company" });
+      }
+    }
+
     const doc = await Employee.create({
       companyId,
       candidateId,
       jobId,
+      userId,
       fullName,
       email,
       phone,
