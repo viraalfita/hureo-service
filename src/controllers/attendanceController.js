@@ -1,5 +1,6 @@
 // controllers/attendanceController.js
 import Attendance from "../models/Attendance.js";
+import Employee from "../models/Employee.js";
 import User from "../models/User.js";
 
 import dayjs from "dayjs";
@@ -198,11 +199,28 @@ export const getAllAttendanceByCompany = async (req, res) => {
     const users = await User.find({ companyId }).select("_id username");
     const userIds = users.map((u) => u._id);
 
+    const employees = await Employee.find({
+      companyId,
+      userId: { $in: userIds },
+    }).lean();
+    const employeeByUserId = new Map(
+      employees.map((e) => [String(e.userId), e])
+    );
+
     const records = await Attendance.find({ userId: { $in: userIds } })
       .sort({ time: -1 })
-      .populate("userId", "username");
+      .populate("userId", "username")
+      .lean();
 
-    return res.json(records);
+    const withEmployee = records.map((r) => {
+      const uid = String(r.userId?._id || r.userId || "");
+      return {
+        ...r,
+        employee: employeeByUserId.get(uid) || null,
+      };
+    });
+
+    return res.json(withEmployee);
   } catch (err) {
     console.error("[ATTENDANCE] getAllAttendanceByCompany error:", err);
     return res.status(500).json({ error: err.message });
@@ -218,6 +236,14 @@ export const getTodayAttendanceByCompany = async (req, res) => {
     const users = await User.find({ companyId }).select("_id username");
     const userIds = users.map((u) => u._id);
 
+    const employees = await Employee.find({
+      companyId,
+      userId: { $in: userIds },
+    }).lean();
+    const employeeByUserId = new Map(
+      employees.map((e) => [String(e.userId), e])
+    );
+
     const startOfDayTZ = dayjs().tz(tz).startOf("day").toDate();
 
     const records = await Attendance.find({
@@ -225,9 +251,18 @@ export const getTodayAttendanceByCompany = async (req, res) => {
       time: { $gte: startOfDayTZ },
     })
       .sort({ time: -1 })
-      .populate("userId", "username");
+      .populate("userId", "username")
+      .lean();
 
-    return res.json(records);
+    const withEmployee = records.map((r) => {
+      const uid = String(r.userId?._id || r.userId || "");
+      return {
+        ...r,
+        employee: employeeByUserId.get(uid) || null,
+      };
+    });
+
+    return res.json(withEmployee);
   } catch (err) {
     console.error("[ATTENDANCE] getTodayAttendanceByCompany error:", err);
     return res.status(500).json({ error: err.message });
